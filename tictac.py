@@ -260,10 +260,16 @@ def play():
     tic = Tictac()
     cell = None
     winner = None
+    global game_count
+
     tic.setmarks(options['user_mark'])
+
+    if game_count > 0:
+         tic.reset()
 
     if options['starter'] == 'N':
         tic.playme()
+        
     tic.print()
 
     for n in range(CELLS):
@@ -291,12 +297,12 @@ def play():
                 print("Computer won!!")
                 return
             elif winner == tic.winners.Draw:
-                print("Draw. Neither won !!")
+                print("Draw. Neither won.")
                 return
         else:
             print("You entered a wrong cell: ", cell)
             n -= 1
-    tic.reset()
+   
 
 
 def main():
