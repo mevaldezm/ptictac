@@ -139,12 +139,12 @@ class Tictac:
 
         if cell == None or cell == '' or len(cell) < 2:
             return False
-        
+
         # ascii conversion
-        col = ord(cell[0]) - ord('A') 
+        col = ord(cell[0]) - ord('A')
         row = ord(cell[1]) - ord('0')
 
-        row -= 1 # matrix row
+        row -= 1  # matrix row
 
         if (col < 0 or col > 2) or (row < 0 or row > 2):
             return False
@@ -160,12 +160,12 @@ class Tictac:
     def setmarks(self, mark):
 
         self.user_mark = mark
-        
+
         if mark == self._marks.Cross:
-           self.game_mark = self._marks.Nought
+            self.game_mark = self._marks.Nought
 
         elif mark == self._marks.Nought:
-             self.game_mark = self._marks.Cross
+            self.game_mark = self._marks.Cross
 
     def checkwinner(self):
 
@@ -265,11 +265,11 @@ def play():
     tic.setmarks(options['user_mark'])
 
     if game_count > 0:
-         tic.reset()
+        tic.reset()
 
     if options['starter'] == 'N':
         tic.playme()
-        
+
     tic.print()
 
     for n in range(CELLS):
@@ -302,13 +302,13 @@ def play():
         else:
             print("You entered a wrong cell: ", cell)
             n -= 1
-   
 
 
 def main():
     while True:
         menu()
         play()
+
 
 if __name__ == "__main__":
     main()
