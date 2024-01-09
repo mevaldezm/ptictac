@@ -5,9 +5,9 @@ CELLS = 9
 ROWS = 3
 COLS = 3
 
-Mark = collections.namedtuple('Mark', ['self._marks.Empty', 'Cross', 'Nought'])
+Mark = collections.namedtuple('Mark', ['Empty', 'Cross', 'Nought'])
 Winner = collections.namedtuple('Winner', ['Nobody', 'Game', 'User', 'Draw'])
-options = 'user_mark': '', 'game_mark': '', 'starter': ''
+options = {'user_mark': '', 'game_mark': '', 'starter': ''}
 game_count = 0
 
 
@@ -32,78 +32,76 @@ class Tictac:
 
     def placemark(self, smark, mark):
 
-         # Check rows
+        # Check rows
         for n in range(ROWS):
-        
+
             if self.grid[n][0] == smark and self.grid[n][1] == smark and self.grid[n][2] == self._marks.Empty:
-            
+
                 self.grid[n][2] = mark
                 return True
-            
+
             elif self.grid[n][0] == self._marks.Empty and self.grid[n][1] == smark and self.grid[n][2] == smark:
-            
+
                 self.grid[n][0] = mark
                 return True
-            
+
             elif self.grid[n][0] == smark and self.grid[n][1] == self._marks.Empty and self.grid[n][2] == smark:
-            
+
                 self.grid[n][1] = mark
                 return True
-            
+
         # for
 
         # check columns
         for n in range(COLS):
-        
+
             if self.grid[0][n] == smark and self.grid[1][n] == smark and self.grid[2][n] == self._marks.Empty:
-            
+
                 self.grid[2][n] = mark
                 return True
-            
+
             elif self.grid[0][n] == self._marks.Empty and self.grid[1][n] == smark and self.grid[2][n] == smark:
-            
+
                 self.grid[0][n] = mark
                 return True
-            
+
             elif self.grid[0][n] == smark and self.grid[1][n] == self._marks.Empty and self.grid[2][n] == smark:
-            
+
                 self.grid[1][n] = mark
                 return True
-            
-        # for
 
         # check diagonal downward
         if self.grid[0][0] == self._marks.Empty and self.grid[1][1] == smark and self.grid[2][2] == smark:
-        
+
             self.grid[0][0] = mark
             return True
-        
+
         elif self.grid[0][0] == smark and self.grid[1][1] == self._marks.Empty and self.grid[2][2] == smark:
-        
+
             self.grid[1][1] = mark
             return True
-        
+
         elif self.grid[0][0] == smark and self.grid[1][1] == smark and self.grid[2][2] == self._marks.Empty:
-        
+
             self.grid[2][2] = mark
             return True
-        
+
         # check diagonal upward
         if self.grid[2][0] == self._marks.Empty and self.grid[1][1] == smark and self.grid[0][2] == smark:
-        
+
             self.grid[2][0] = mark
             return True
-        
+
         elif self.grid[2][0] == smark and self.grid[1][1] == self._marks.Empty and self.grid[0][2] == smark:
-        
+
             self.grid[1][1] = mark
             return True
-        
+
         elif self.grid[2][0] == smark and self.grid[1][1] == smark and self.grid[0][2] == self._marks.Empty:
-        
+
             self.grid[0][2] = mark
             return True
-        
+
         return False
 
     @property
@@ -123,9 +121,9 @@ class Tictac:
     def playme(self):
 
         # Try to win first, otherwise try to block opponent
-        if  self.placemark(self.game_mark, self.game_mark) or self.placemark(self.user_mark, self.game_mark):
+        if self.placemark(self.game_mark, self.game_mark) or self.placemark(self.user_mark, self.game_mark):
             return True
-    
+
         for c in range(CELLS):
 
             row = choice(range(ROWS))
@@ -136,16 +134,17 @@ class Tictac:
                 return True
 
         return False
-    
+
     def play(self, cell):
 
         if cell == None or cell == '' or len(cell) < 2:
             return False
-                
-        col = ord(cell[0]) - ord('A')
+        
+        # ascii conversion
+        col = ord(cell[0]) - ord('A') 
         row = ord(cell[1]) - ord('0')
 
-        row -= 1
+        row -= 1 # matrix row
 
         if (col < 0 or col > 2) or (row < 0 or row > 2):
             return False
@@ -158,16 +157,15 @@ class Tictac:
 
         return False
 
-    def setmarks(self, usermark):
+    def setmarks(self, mark):
 
-        self.user_mark = usermark
-        if usermark == 'X':
-            self.user_mark = self._marks.Cross
-            self.game_mark = self._marks.Nought
+        self.user_mark = mark
+        
+        if mark == self._marks.Cross:
+           self.game_mark = self._marks.Nought
 
-        elif usermark == 'O':
-            self.user_mark = self._marks.Nought
-            self.game_mark = self._marks.Cross
+        elif mark == self._marks.Nought:
+             self.game_mark = self._marks.Cross
 
     def checkwinner(self):
 
@@ -203,7 +201,7 @@ class Tictac:
         for n in range(ROWS):
             for m in range(COLS):
                 self.grid[n][m] = self._marks.Empty
-        
+
     def print(self):
         divider = "------------------"
         print()
@@ -243,7 +241,7 @@ def menu():
         bye()
 
     while options['user_mark'] != 'X' and options['user_mark'] != 'O' and options['user_mark'] != 'Q':
-        print("Enter a mark (X, O): ", end='')
+        print("Enter your mark (X, O): ", end='')
         options['user_mark'] = input().upper()
 
     if options['user_mark'] == 'Q':
@@ -290,7 +288,7 @@ def play():
                 return
 
             elif winner == tic.winners.Game:
-                print("Game won!!")
+                print("Computer won!!")
                 return
             elif winner == tic.winners.Draw:
                 print("Draw. Neither won !!")
@@ -298,12 +296,13 @@ def play():
         else:
             print("You entered a wrong cell: ", cell)
             n -= 1
+    tic.reset()
 
 
 def main():
-    menu()
-    play()
-
+    while True:
+        menu()
+        play()
 
 if __name__ == "__main__":
     main()
